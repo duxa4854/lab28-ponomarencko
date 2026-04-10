@@ -1,9 +1,9 @@
 using GamesApi.Models;
 namespace GamesApi.Data;
 
-public static class GameStore {
+public static class GamesStore {
     private static int _nextId = 4;
-    public static List<Game> Game { get; } = new() {
+    public static List<Game> Games { get; } = new() {
         new Game {
             Id = 1,
             Title = "The Elder Scrolls IV: Oblivion",

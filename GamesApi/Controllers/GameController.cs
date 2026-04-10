@@ -13,6 +13,13 @@ public class GamesController : ControllerBase {
         return Ok(GamesStore.Games);
     }
 
+
+    [HttpGet("favourites")]
+    public ActionResult<List<Game>> GetFavourites() {
+        var favourites = GamesStore.Games.Where(g => g.IsFavourite).ToList();
+        return Ok(favourites);
+    }
+
     [HttpGet("{id}")]
     public ActionResult<Game> GetById(int id) {
         var game = GamesStore.Games.FirstOrDefault(g => g.Id == id);
@@ -21,12 +28,15 @@ public class GamesController : ControllerBase {
         }
         return Ok(game);
     }
+
     [HttpPost]
     public ActionResult<Game> Create([FromBody] Game game) {
+
         game.Id = GamesStore.NextId();
         GamesStore.Games.Add(game);
         return CreatedAtAction(nameof(GetById), new { id = game.Id }, game);
     }
+
     [HttpDelete("{id}")]
     public ActionResult Delete(int id) {
         var game = GamesStore.Games.FirstOrDefault(g => g.Id == id);
@@ -36,6 +46,7 @@ public class GamesController : ControllerBase {
         GamesStore.Games.Remove(game);
         return NoContent();
     }
+
     [HttpPut("{id}")]
     public ActionResult<Game> Update(int id, [FromBody] Game updated) {
         var game = GamesStore.Games.FirstOrDefault(g => g.Id == id);
@@ -45,8 +56,8 @@ public class GamesController : ControllerBase {
         game.Title = updated.Title;
         game.Genre = updated.Genre;
         game.ReleaseYear = updated.ReleaseYear;
+
+        game.IsFavourite = updated.IsFavourite;
         return Ok(game);
     }
-
-
 }
